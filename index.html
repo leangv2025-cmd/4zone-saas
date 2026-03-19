@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>4Zone — AI-Powered SaaS Platform</title>
+<meta name="description" content="4Zone: The all-in-one AI platform powered by Google AI."/>
+<style>
+/* === FONTS === */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@300;400;500&display=swap');
+
+:root {
+  --bg:#0a0a0f;--bg2:#111118;--bg3:#16161f;
+  --border:rgba(255,255,255,0.08);
+  --text:#f0f0f5;--text2:#9898b0;
+  --accent:#00e5ff;--accent2:#7c3aed;--accent3:#f59e0b;
+  --green:#10b981;
+  --card:rgba(255,255,255,0.03);--card-hover:rgba(255,255,255,0.07);
+  --shadow:0 4px 24px rgba(0,0,0,0.4);
+  --radius:16px;--radius-sm:10px;
+  --fh:'Plus Jakarta Sans',system-ui,sans-serif;
+  --fb:'Inter',system-ui,sans-serif;
+  --nav-h:68px;
+}
+[data-theme="light"]{
+  --bg:#f5f5fc;--bg2:#fff;--bg3:#ebebf5;
+  --border:rgba(0,0,0,0.08);
+  --text:#111122;--text2:#555570;
+  --card:rgba(0,0,0,0.03);--card-hover:rgba(0,0,0,0.06);
+  --shadow:0 4px 24px rgba(0,0,0,0.08);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--fb);background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden;transition:background .3s,color .3s}
+a{color:inherit;text-decoration:none}
+ul{list-style:none}
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-thumb{background:var(--accent2);border-radius:3px}
+.container{width:100%;max-width:1160px;margin:0 auto;padding:0 20px}
+
+/* ── NAV ── */
+.nav{position:fixed;top:0;left:0;right:0;z-index:1000;height:var(--nav-h);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  background:rgba(10,10,15,0.88);border-bottom:1px solid var(--border);transition:all .3s}
+[data-theme="light"] .nav{background:rgba(245,245,252,0.92)}
+.nav.scrolled{box-shadow:0 2px 32px rgba(0,0,0,0.3)}
+.nav-inner{display:flex;align-items:center;height:100%;max-width:1160px;margin:0 auto;padding:0 20px;gap:24px}
+.logo{display:flex;align-items:center;gap:8px;font-family:var(--fh);font-weight:800;font-size:1.4rem;white-space:nowrap}
+.logo-icon{color:var(--accent);font-size:1.5rem;line-height:1}
+.logo .acc{color:var(--accent)}
+.nav-links{display:flex;gap:2px;align-items:center;flex:1}
+.nav-links a{padding:6px 12px;border-radius:8px;font-size:.88rem;font-weight:500;color:var(--text2);transition:all .2s}
+.nav-links a:hover{color:var(--text);background:var(--card-hover)}
+.nav-links a.active{color:var(--text)}
+.nav-actions{display:flex;align-items:center;gap:10px;margin-left:auto}
+.btn-theme{background:var(--card);border:1px solid var(--border);color:var(--text2);border-radius:8px;
+  width:34px;height:34px;cursor:pointer;font-size:.95rem;transition:all .2s;
+  display:flex;align-items:center;justify-content:center}
+.btn-theme:hover{background:var(--card-hover);color:var(--text)}
+.hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:8px}
+.hamburger span{display:block;width:22px;height:2px;background:var(--text);border-radius:2px;transition:all .3s}
+
+/* ── BUTTONS ── */
+.btn-primary{background:linear-gradient(135deg,var(--accent2),var(--accent));color:#fff;
+  padding:10px 22px;border-radius:10px;font-family:var(--fb);font-weight:500;font-size:.9rem;
+  border:none;cursor:pointer;transition:all .2s;display:inline-block;white-space:nowrap}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(124,58,237,.4)}
+.btn-primary.lg{padding:14px 32px;font-size:1rem;border-radius:12px}
+.btn-ghost{color:var(--text2);padding:10px 22px;border-radius:10px;font-weight:500;font-size:.9rem;
+  border:1px solid var(--border);background:transparent;cursor:pointer;transition:all .2s;display:inline-block}
+.btn-ghost:hover{color:var(--text);border-color:var(--accent)}
+.btn-ghost.lg{padding:14px 32px;font-size:1rem;border-radius:12px}
+.btn-outline{color:var(--accent);padding:12px 28px;border-radius:10px;font-weight:500;
+  border:1px solid var(--accent);background:transparent;cursor:pointer;transition:all .2s;
+  display:inline-block;font-size:.95rem}
+.btn-outline:hover{background:rgba(0,229,255,.08)}
+
+/* ── HERO ── */
+.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;
+  text-align:center;position:relative;overflow:hidden;
+  padding:calc(var(--nav-h) + 48px) 20px 80px}
+.hero-bg{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.hero-grid{position:absolute;inset:0;
+  background-image:linear-gradient(rgba(0,229,255,.05) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(0,229,255,.05) 1px,transparent 1px);
+  background-size:60px 60px;animation:gridFade 8s ease-in-out infinite alternate}
+[data-theme="light"] .hero-grid{
+  background-image:linear-gradient(rgba(124,58,237,.06) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(124,58,237,.06) 1px,transparent 1px)}
+@keyframes gridFade{from{opacity:.5}to{opacity:1}}
+.orb{position:absolute;border-radius:50%;filter:blur(80px);animation:orbFloat 12s ease-in-out infinite}
+.orb1{width:480px;height:480px;background:radial-gradient(circle,rgba(124,58,237,.25),transparent);top:-100px;left:-100px}
+.orb2{width:380px;height:380px;background:radial-gradient(circle,rgba(0,229,255,.18),transparent);top:15%;right:-80px;animation-delay:-4s}
+.orb3{width:280px;height:280px;background:radial-gradient(circle,rgba(245,158,11,.12),transparent);bottom:0;left:30%;animation-delay:-8s}
+@keyframes orbFloat{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(28px,-18px) scale(1.05)}66%{transform:translate(-18px,28px) scale(.95)}}
+.hero .container{position:relative;z-index:2;max-width:780px}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);
+  padding:6px 16px;border-radius:100px;font-size:.8rem;color:var(--text2);margin-bottom:28px;animation:fadeUp .6s ease both}
+.badge-dot{width:7px;height:7px;background:var(--green);border-radius:50%;animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.hero-title{font-family:var(--fh);font-size:clamp(2.4rem,6vw,4.8rem);font-weight:800;line-height:1.1;
+  margin-bottom:22px;animation:fadeUp .6s .1s ease both}
+.gradient-text{background:linear-gradient(135deg,var(--accent),var(--accent2),var(--accent3));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  background-size:200%;animation:gradShift 4s ease infinite}
+@keyframes gradShift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+.hero-sub{color:var(--text2);font-size:clamp(.95rem,2vw,1.15rem);max-width:540px;margin:0 auto 32px;
+  line-height:1.7;animation:fadeUp .6s .2s ease both}
+.hero-cta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:36px;animation:fadeUp .6s .3s ease both}
+.hero-tools{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:56px;animation:fadeUp .6s .4s ease both}
+.tool-chip{background:var(--card);border:1px solid var(--border);padding:8px 16px;
+  border-radius:100px;font-size:.85rem;font-weight:500;transition:all .2s;cursor:default}
+.tool-chip:hover{border-color:var(--accent);background:rgba(0,229,255,.06);transform:translateY(-2px)}
+.hero-stats{display:flex;justify-content:center;align-items:center;gap:28px;animation:fadeUp .6s .5s ease both}
+.stat{text-align:center}
+.stat-n{display:block;font-family:var(--fh);font-size:2.1rem;font-weight:800;color:var(--accent);line-height:1}
+.stat-l{font-size:.75rem;color:var(--text2);text-transform:uppercase;letter-spacing:.1em}
+.stat-div{width:1px;height:38px;background:var(--border)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+
+/* ── SECTIONS ── */
+.section{padding:90px 0}
+.section-alt{background:var(--bg2)}
+.section-label{display:inline-block;font-size:.75rem;text-transform:uppercase;letter-spacing:.15em;
+  color:var(--accent);font-weight:600;margin-bottom:14px;background:rgba(0,229,255,.08);
+  padding:4px 12px;border-radius:100px;border:1px solid rgba(0,229,255,.2)}
+.section-title{font-family:var(--fh);font-size:clamp(1.9rem,4vw,2.6rem);font-weight:800;
+  margin-bottom:14px;line-height:1.2}
+.section-sub{color:var(--text2);font-size:1rem;margin-bottom:48px;max-width:480px}
+
+/* ── TOOLS GRID ── */
+.tools-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px}
+.tool-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+  padding:28px 24px;position:relative;transition:all .3s;display:flex;flex-direction:column;gap:10px}
+.tool-card:hover{background:var(--card-hover);border-color:rgba(124,58,237,.4);
+  transform:translateY(-4px);box-shadow:0 16px 48px rgba(124,58,237,.18)}
+.tool-card.featured{border-color:rgba(0,229,255,.3);background:linear-gradient(145deg,rgba(0,229,255,.04),var(--card))}
+.tool-card.featured:hover{border-color:var(--accent)}
+.tool-emoji{font-size:2.2rem;line-height:1}
+.tool-badge{position:absolute;top:18px;right:18px;font-size:.68rem;font-weight:700;
+  text-transform:uppercase;letter-spacing:.08em;padding:3px 9px;border-radius:100px;
+  background:var(--accent2);color:#fff}
+.tool-badge.pop{background:var(--accent);color:#000}
+.tool-badge.new{background:var(--green);color:#000}
+.tool-card h3{font-family:var(--fh);font-size:1.25rem;font-weight:700}
+.tool-card p{color:var(--text2);font-size:.9rem;line-height:1.6}
+.tool-features{display:flex;flex-direction:column;gap:5px;flex:1}
+.tool-features li{font-size:.83rem;color:var(--text2)}
+.tool-link{display:inline-block;color:var(--accent);font-size:.85rem;font-weight:600;margin-top:auto;transition:opacity .2s}
+.tool-link:hover{opacity:.7;text-decoration:underline}
+
+/* ── TECH GRID ── */
+.tech-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:18px;margin-bottom:36px}
+.tech-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+  padding:24px 22px;transition:all .3s;display:flex;flex-direction:column;gap:9px}
+.tech-card:hover{background:var(--card-hover);border-color:rgba(124,58,237,.3);transform:translateY(-3px)}
+.tech-logo{font-size:1.9rem;line-height:1}
+.tech-card h4{font-family:var(--fh);font-size:.98rem;font-weight:700}
+.tech-card p{color:var(--text2);font-size:.84rem;line-height:1.6;flex:1}
+.tech-tag{display:inline-block;font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;
+  color:var(--accent2);background:rgba(124,58,237,.1);padding:3px 10px;border-radius:100px;
+  border:1px solid rgba(124,58,237,.2);width:fit-content}
+.stack-bar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+  padding:18px 22px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm)}
+.stack-label{font-size:.8rem;color:var(--text2);font-weight:600}
+.stack-chip{background:var(--bg3);border:1px solid var(--border);padding:3px 11px;
+  border-radius:6px;font-size:.77rem;color:var(--text2);font-weight:500}
+
+/* ── PRICING ── */
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:1040px}
+@media(max-width:960px){.pricing-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.pricing-grid{grid-template-columns:1fr}}
+.price-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+  padding:28px 24px;display:flex;flex-direction:column;gap:16px;position:relative;transition:all .3s}
+.price-card:hover{border-color:rgba(124,58,237,.3);transform:translateY(-4px)}
+.price-card-pro{border-color:rgba(0,229,255,.4);background:linear-gradient(145deg,rgba(0,229,255,.04),rgba(124,58,237,.04),var(--card))}
+.price-card-pro:hover{border-color:var(--accent);box-shadow:0 20px 60px rgba(0,229,255,.12)}
+.popular-badge{position:absolute;top:-13px;left:50%;transform:translateX(-50%);
+  background:linear-gradient(135deg,var(--accent2),var(--accent));color:#fff;
+  font-size:.7rem;font-weight:700;padding:4px 14px;border-radius:100px;white-space:nowrap}
+.price-header{display:flex;flex-direction:column;gap:4px}
+.price-icon{font-size:1.6rem;line-height:1;margin-bottom:2px}
+.price-header h3{font-family:var(--fh);font-size:1.2rem;font-weight:800;line-height:1.2}
+.price-desc{color:var(--text2);font-size:.82rem;margin-top:2px}
+.price-amount{display:flex;align-items:baseline;gap:3px;margin:2px 0}
+.price-num{font-family:var(--fh);font-size:2.6rem;font-weight:800;color:var(--accent);line-height:1}
+.price-per{color:var(--text2);font-size:.85rem}
+.price-features{display:flex;flex-direction:column;gap:8px;flex:1}
+.price-features li{
+  display:flex;align-items:center;gap:8px;
+  font-size:.85rem;line-height:1.4;
+}
+.price-features li .fi{
+  font-size:.9rem;width:18px;text-align:center;flex-shrink:0;
+}
+.price-features li.off{opacity:.3;text-decoration:line-through}
+.price-note{text-align:center;font-size:.74rem;color:var(--text2)}
+/* MAX card */
+.price-card-max{
+  border-color:rgba(245,158,11,.35);
+  background:linear-gradient(150deg,rgba(245,158,11,.07),rgba(239,68,68,.04),var(--card));
+  overflow:visible;
+}
+.price-card-max:hover{border-color:var(--accent3);box-shadow:0 20px 60px rgba(245,158,11,.14);transform:translateY(-4px)}
+.coming-soon-badge{
+  position:absolute;top:-13px;left:50%;transform:translateX(-50%);
+  background:linear-gradient(135deg,#f59e0b,#ef4444);color:#fff;
+  font-size:.7rem;font-weight:700;padding:4px 14px;border-radius:100px;white-space:nowrap;
+  box-shadow:0 4px 14px rgba(245,158,11,.35)
+}
+.price-num-max{
+  font-family:var(--fh);font-size:2.6rem;font-weight:800;line-height:1;
+  background:linear-gradient(135deg,#f59e0b,#ef4444);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.unlim-tag{
+  display:inline-flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,rgba(245,158,11,.18),rgba(239,68,68,.12));
+  border:1px solid rgba(245,158,11,.35);
+  color:#fbbf24;font-size:.68rem;font-weight:800;
+  padding:1px 7px;border-radius:100px;margin-left:5px;
+  flex-shrink:0;line-height:1.6;
+}
+.btn-max-soon{
+  display:block;text-align:center;padding:11px 16px;border-radius:10px;
+  background:linear-gradient(135deg,rgba(245,158,11,.12),rgba(239,68,68,.08));
+  border:1px solid rgba(245,158,11,.3);
+  color:#f59e0b;font-weight:700;font-size:.88rem;
+  cursor:default;letter-spacing:.02em;
+}
+
+/* ── PARTNERSHIPS ── */
+.partner-notice{display:flex;align-items:flex-start;gap:12px;
+  background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.22);
+  padding:14px 18px;border-radius:var(--radius-sm);margin-bottom:36px;font-size:.9rem;color:var(--text2)}
+.partners-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:18px;margin-bottom:44px}
+.partner-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+  padding:24px 22px;display:flex;flex-direction:column;gap:9px;transition:all .3s}
+.partner-card:hover{background:var(--card-hover);transform:translateY(-3px)}
+.partner-logo{font-size:1.9rem}
+.partner-card h4{font-family:var(--fh);font-size:.98rem;font-weight:700}
+.partner-card p{color:var(--text2);font-size:.82rem;line-height:1.6;flex:1}
+.pstatus{display:inline-block;font-size:.72rem;font-weight:600;padding:3px 11px;
+  border-radius:100px;width:fit-content}
+.pstatus.applying{background:rgba(16,185,129,.1);color:var(--green);border:1px solid rgba(16,185,129,.3)}
+.pstatus.tbd{background:rgba(245,158,11,.1);color:var(--accent3);border:1px solid rgba(245,158,11,.3)}
+.partner-cta{text-align:center}
+.partner-cta p{color:var(--text2);margin-bottom:14px}
+
+/* ── ABOUT ── */
+.about-grid{display:grid;grid-template-columns:1fr 340px;gap:56px;align-items:start}
+.about-text{display:flex;flex-direction:column;gap:18px}
+.about-text p{color:var(--text2);line-height:1.8;font-size:.97rem}
+.about-values{display:flex;gap:9px;flex-wrap:wrap}
+.value-chip{background:var(--card);border:1px solid var(--border);padding:6px 14px;border-radius:100px;font-size:.82rem;font-weight:500}
+.about-visual{display:flex;flex-direction:column;gap:14px}
+.about-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+  padding:22px;transition:all .3s}
+.about-card:hover{background:var(--card-hover);transform:translateY(-2px)}
+.ac-icon{font-size:1.9rem;margin-bottom:9px}
+.about-card h4{font-family:var(--fh);font-size:1rem;font-weight:700;margin-bottom:7px}
+.about-card p{color:var(--text2);font-size:.86rem;line-height:1.6}
+
+/* ── CONTACT ── */
+.contact-grid{display:grid;grid-template-columns:1fr 1.2fr;gap:56px;align-items:start}
+.contact-info{display:flex;flex-direction:column;gap:18px}
+.contact-item{display:flex;gap:14px;align-items:flex-start}
+.ci-icon{font-size:1.3rem;flex-shrink:0}
+.contact-item strong{display:block;font-weight:600;margin-bottom:2px}
+.contact-item p{color:var(--text2);font-size:.88rem}
+.contact-form{display:flex;flex-direction:column;gap:12px}
+.contact-form input,.contact-form select,.contact-form textarea{
+  background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);
+  padding:11px 15px;color:var(--text);font-family:var(--fb);font-size:.9rem;width:100%;
+  transition:border-color .2s;outline:none}
+.contact-form input:focus,.contact-form select:focus,.contact-form textarea:focus{border-color:var(--accent)}
+.contact-form select option{background:var(--bg2)}
+.contact-form textarea{resize:vertical}
+
+/* ── FOOTER ── */
+.footer{background:var(--bg2);border-top:1px solid var(--border);padding:56px 0 28px}
+.footer-top{display:grid;grid-template-columns:1fr auto;gap:56px;margin-bottom:44px}
+.footer-brand{max-width:240px}
+.footer-brand .logo{margin-bottom:10px}
+.footer-brand p{color:var(--text2);font-size:.86rem;line-height:1.6}
+.footer-links{display:flex;gap:52px}
+.footer-col{display:flex;flex-direction:column;gap:9px}
+.footer-col h5{font-family:var(--fh);font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:3px}
+.footer-col a{color:var(--text2);font-size:.86rem;transition:color .2s}
+.footer-col a:hover{color:var(--accent)}
+.footer-bottom{border-top:1px solid var(--border);padding-top:22px;display:flex;
+  justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px}
+.footer-bottom p{color:var(--text2);font-size:.82rem}
+.footer-powered{color:var(--accent2) !important}
+
+/* ── TEAM ── */
+.team-section{margin-top:64px}
+.team-section-title{font-family:var(--fh);font-size:1.4rem;font-weight:800;margin-bottom:6px}
+.team-section-sub{color:var(--text2);font-size:.9rem;margin-bottom:32px}
+
+/* Founder card */
+.founder-card{
+  display:flex;align-items:center;gap:28px;
+  background:linear-gradient(135deg,rgba(124,58,237,.08),rgba(0,229,255,.05),var(--card));
+  border:1px solid rgba(124,58,237,.3);
+  border-radius:var(--radius);padding:28px 32px;
+  margin-bottom:40px;position:relative;overflow:hidden;
+  transition:all .3s;
+}
+.founder-card:hover{border-color:var(--accent2);box-shadow:0 16px 48px rgba(124,58,237,.18);transform:translateY(-3px)}
+.founder-card::before{
+  content:'';position:absolute;top:-40px;right:-40px;
+  width:180px;height:180px;border-radius:50%;
+  background:radial-gradient(circle,rgba(124,58,237,.15),transparent);
+  pointer-events:none;
+}
+.founder-avatar{
+  width:80px;height:80px;border-radius:20px;flex-shrink:0;
+  background:linear-gradient(135deg,var(--accent2),var(--accent));
+  display:flex;align-items:center;justify-content:center;
+  font-size:2.2rem;line-height:1;
+  box-shadow:0 8px 24px rgba(124,58,237,.35);
+}
+.founder-info{flex:1}
+.founder-role{
+  font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;
+  color:var(--accent);margin-bottom:4px;
+}
+.founder-name{font-family:var(--fh);font-size:1.5rem;font-weight:800;line-height:1.1;margin-bottom:6px}
+.founder-bio{color:var(--text2);font-size:.88rem;line-height:1.6}
+.founder-tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.ftag{background:rgba(124,58,237,.12);border:1px solid rgba(124,58,237,.25);
+  color:var(--text2);font-size:.72rem;font-weight:600;padding:3px 10px;border-radius:100px}
+
+/* Team grid */
+.team-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px}
+.member-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--radius);padding:22px 18px;
+  display:flex;flex-direction:column;align-items:center;
+  text-align:center;gap:10px;transition:all .3s;
+}
+.member-card:hover{background:var(--card-hover);border-color:rgba(0,229,255,.25);transform:translateY(-4px);box-shadow:0 12px 32px rgba(0,229,255,.1)}
+.member-avatar{
+  width:68px;height:68px;border-radius:18px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.7rem;line-height:1;margin-bottom:2px;
+  overflow:hidden;flex-shrink:0;
+}
+.member-name{font-family:var(--fh);font-size:.98rem;font-weight:700;line-height:1.2}
+.member-role{font-size:.74rem;font-weight:600;color:var(--accent);
+  background:rgba(0,229,255,.08);border:1px solid rgba(0,229,255,.15);
+  padding:3px 10px;border-radius:100px;white-space:nowrap}
+.member-desc{color:var(--text2);font-size:.78rem;line-height:1.5}
+
+@media(max-width:600px){
+  .founder-card{flex-direction:column;text-align:center;padding:24px 20px}
+  .founder-tags{justify-content:center}
+  .team-grid{grid-template-columns:repeat(2,1fr)}
+}
+
+/* ── MOBILE ── */
+@media(max-width:900px){
+  .nav-links{display:none}
+  .about-grid,.contact-grid{grid-template-columns:1fr}
+  .footer-top{grid-template-columns:1fr}
+  .footer-links{gap:36px}
+}
+@media(max-width:600px){
+  .hero-stats{gap:18px}
+  .stat-n{font-size:1.6rem}
+  .pricing-grid{grid-template-columns:1fr}
+  .footer-links{flex-direction:column;gap:20px}
+  .footer-bottom{flex-direction:column;text-align:center}
+}
+
+/* ── SCROLL REVEAL ── */
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .5s ease,transform .5s ease}
+.reveal.visible{opacity:1;transform:none}
+
+/* ── SCROLL PROGRESS BAR ── */
+#scrollBar{position:fixed;top:0;left:0;height:3px;width:0%;
+  background:linear-gradient(90deg,var(--accent2),var(--accent));
+  z-index:9999;transition:width .1s linear;border-radius:0 2px 2px 0}
+
+/* ── DOTS MENU BUTTON ── */
+.dots-btn{
+  display:flex;align-items:center;justify-content:center;
+  width:36px;height:36px;border-radius:10px;
+  background:var(--card);border:1px solid var(--border);
+  cursor:pointer;font-size:1.1rem;font-weight:900;
+  color:var(--text2);letter-spacing:-.5px;
+  transition:all .2s;flex-shrink:0;
+  position:relative;z-index:1002;
+  line-height:1;user-select:none;
+}
+.dots-btn:hover{background:var(--card-hover);color:var(--text);border-color:var(--accent)}
+.dots-btn.open{background:var(--card-hover);color:var(--text);border-color:var(--accent2)}
+
+/* ── DROPDOWN MENU ── */
+.dropdown-wrap{position:relative}
+.dropdown{
+  position:absolute;top:calc(100% + 10px);left:0;
+  min-width:220px;
+  background:var(--bg2);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:8px;
+  box-shadow:0 16px 48px rgba(0,0,0,.45);
+  backdrop-filter:blur(24px);
+  -webkit-backdrop-filter:blur(24px);
+  z-index:1001;
+  opacity:0;pointer-events:none;
+  transform:translateY(-8px) scale(.97);
+  transition:opacity .2s ease,transform .2s ease;
+}
+[data-theme="light"] .dropdown{box-shadow:0 16px 48px rgba(0,0,0,.14)}
+.dropdown.show{opacity:1;pointer-events:all;transform:none}
+.dropdown-section{
+  font-size:.68rem;font-weight:700;text-transform:uppercase;
+  letter-spacing:.1em;color:var(--text2);
+  padding:6px 10px 4px;
+}
+.dropdown a{
+  display:flex;align-items:center;gap:10px;
+  padding:9px 10px;border-radius:9px;
+  font-size:.88rem;font-weight:500;color:var(--text2);
+  transition:all .18s;cursor:pointer;
+  text-decoration:none;
+}
+.dropdown a .di{font-size:1rem;width:20px;text-align:center;flex-shrink:0}
+.dropdown a:hover{background:var(--card-hover);color:var(--text)}
+.dropdown a.active-link{color:var(--accent);background:rgba(0,229,255,.06)}
+.dropdown-divider{height:1px;background:var(--border);margin:6px 0}
+.dropdown-badge{
+  margin-left:auto;font-size:.6rem;font-weight:700;
+  background:linear-gradient(135deg,var(--accent2),var(--accent));
+  color:#fff;padding:2px 6px;border-radius:100px;
+}
+</style>
+</head>
+<body>
+<div id="scrollBar"></div>
+
+<!-- NAV -->
+<nav class="nav" id="navbar">
+  <div class="nav-inner">
+
+    <!-- ••• Dots Menu + Logo group -->
+    <div style="display:flex;align-items:center;gap:10px">
+      <div class="dropdown-wrap">
+        <button class="dots-btn" id="dotsBtn" aria-label="Menu">•••</button>
+        <div class="dropdown" id="dropdown">
+          <div class="dropdown-section">Navigate</div>
+          <a href="#home"         data-sec="home"         class="active-link"><span class="di">🏠</span> Home</a>
+          <a href="#platform"     data-sec="platform"    ><span class="di">⚡</span> Platform</a>
+          <a href="#technology"   data-sec="technology"  ><span class="di">🔬</span> Technology</a>
+          <a href="#pricing"      data-sec="pricing"     ><span class="di">💰</span> Pricing</a>
+          <a href="#partnerships" data-sec="partnerships"><span class="di">🤝</span> Partnerships</a>
+          <a href="#about"        data-sec="about"       ><span class="di">👋</span> About &amp; Team</a>
+          <a href="#contact"      data-sec="contact"     ><span class="di">📬</span> Contact</a>
+          <div class="dropdown-divider"></div>
+          <div class="dropdown-section">Legal</div>
+          <a href="#privacy" onclick="showPolicy('privacy');closeDrop()"><span class="di">🔒</span> Privacy Policy</a>
+          <a href="#terms"   onclick="showPolicy('terms');closeDrop()"  ><span class="di">📄</span> Terms of Service</a>
+          <div class="dropdown-divider"></div>
+          <a href="https://app.4zone.store" target="_blank" style="color:var(--accent);font-weight:700">
+            <span class="di">🚀</span> Launch App <span class="dropdown-badge">NEW</span>
+          </a>
+        </div>
+      </div>
+      <a href="#home" class="logo"><span class="logo-icon">⬡</span><span>4<span class="acc">Zone</span></span></a>
+    </div>
+
+    <!-- Desktop nav links (hidden on mobile) -->
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#home">Home</a></li>
+      <li><a href="#platform">Platform</a></li>
+      <li><a href="#technology">Technology</a></li>
+      <li><a href="#pricing">Pricing</a></li>
+      <li><a href="#partnerships">Partnerships</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+
+    <div class="nav-actions">
+      <button class="btn-theme" id="themeToggle">☀</button>
+      <a href="https://app.4zone.store" class="btn-primary" target="_blank">Launch App →</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-bg">
+    <div class="hero-grid"></div>
+    <div class="orb orb1"></div><div class="orb orb2"></div><div class="orb orb3"></div>
+  </div>
+  <div class="container">
+    <div class="hero-badge"><span class="badge-dot"></span> Now Live · Powered by Google AI</div>
+    <h1 class="hero-title">One Platform.<br/><span class="gradient-text">Infinite AI Power.</span></h1>
+    <p class="hero-sub">Chat, generate voices, create images and videos — all inside one sleek AI workspace. Built for creators, developers &amp; teams.</p>
+    <div class="hero-cta">
+      <a href="https://app.4zone.store" class="btn-primary lg" target="_blank">🚀 Start Free — No Card Needed</a>
+      <a href="#platform" class="btn-ghost lg">Explore Tools ↓</a>
+    </div>
+    <div class="hero-tools">
+      <div class="tool-chip">🤖 AI Chat</div>
+      <div class="tool-chip">🎙️ Voice Gen</div>
+      <div class="tool-chip">🎨 Image Gen</div>
+      <div class="tool-chip">🎬 Video Gen</div>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><span class="stat-n">4</span><span class="stat-l">AI Tools</span></div>
+      <div class="stat-div"></div>
+      <div class="stat"><span class="stat-n">∞</span><span class="stat-l">Possibilities</span></div>
+      <div class="stat-div"></div>
+      <div class="stat"><span class="stat-n">1</span><span class="stat-l">Platform</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- PLATFORM -->
+<section class="section" id="platform">
+  <div class="container">
+    <div class="section-label">⚡ Platform</div>
+    <h2 class="section-title">Every AI Tool You Need</h2>
+    <p class="section-sub">Four powerful tools. One seamless experience.</p>
+    <div class="tools-grid">
+      <div class="tool-card reveal"><div class="tool-emoji">🤖</div><div class="tool-badge">AI</div>
+        <h3>AI Assistant</h3><p>Intelligent conversational AI powered by Google Gemini. Answer questions, write content, analyze data and brainstorm ideas.</p>
+        <ul class="tool-features"><li>✓ Google Gemini powered</li><li>✓ Multi-turn conversations</li><li>✓ Code generation</li><li>✓ File analysis</li></ul>
+        <a href="https://app.4zone.store/chat" class="tool-link" target="_blank">Open Tool →</a></div>
+      <div class="tool-card reveal"><div class="tool-emoji">🎙️</div><div class="tool-badge">Voice</div>
+        <h3>Voice Converter</h3><p>Convert text to natural-sounding speech or upload audio files. Multiple voices, languages and tone controls.</p>
+        <ul class="tool-features"><li>✓ Text to Speech (TTS)</li><li>✓ File upload to speech</li><li>✓ 30+ voice styles</li><li>✓ MP3 / WAV export</li></ul>
+        <a href="https://app.4zone.store/voice" class="tool-link" target="_blank">Open Tool →</a></div>
+      <div class="tool-card featured reveal"><div class="tool-emoji">🎨</div><div class="tool-badge pop">Popular</div>
+        <h3>Image Generator</h3><p>Generate stunning visuals from text prompts using Google Imagen. Art, photography, illustrations — anything you imagine.</p>
+        <ul class="tool-features"><li>✓ Google Imagen API</li><li>✓ Multiple art styles</li><li>✓ HD &amp; 4K output</li><li>✓ Batch generation</li></ul>
+        <a href="https://app.4zone.store/image" class="tool-link" target="_blank">Open Tool →</a></div>
+      <div class="tool-card reveal"><div class="tool-emoji">🎬</div><div class="tool-badge new">New</div>
+        <h3>Video Generator</h3><p>Transform text or images into short videos using Google Veo. Perfect for creators, marketers and social media.</p>
+        <ul class="tool-features"><li>✓ Google Veo API</li><li>✓ Text → Video</li><li>✓ Image → Video</li><li>✓ Up to 60s clips</li></ul>
+        <a href="https://app.4zone.store/video" class="tool-link" target="_blank">Open Tool →</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- TECHNOLOGY -->
+<section class="section section-alt" id="technology">
+  <div class="container">
+    <div class="section-label">🔬 Technology</div>
+    <h2 class="section-title">Built on World-Class AI</h2>
+    <p class="section-sub">Powered by Google Cloud's latest AI APIs — enterprise-grade, reliable, and blazing fast.</p>
+    <div class="tech-grid">
+      <div class="tech-card reveal"><div class="tech-logo">🧠</div><h4>Google Gemini</h4><p>Multimodal AI powering our chat assistant. Understands text, images, and documents with human-like comprehension.</p><span class="tech-tag">AI Chat</span></div>
+      <div class="tech-card reveal"><div class="tech-logo">🖼️</div><h4>Google Imagen</h4><p>State-of-the-art image generation producing photorealistic and artistic visuals from text descriptions.</p><span class="tech-tag">Image Gen</span></div>
+      <div class="tech-card reveal"><div class="tech-logo">🎥</div><h4>Google Veo</h4><p>Advanced video generation creating high-quality, coherent clips from text prompts or still images.</p><span class="tech-tag">Video Gen</span></div>
+      <div class="tech-card reveal"><div class="tech-logo">🗣️</div><h4>Google TTS</h4><p>Neural text-to-speech delivering natural, expressive voices across 40+ languages and regional accents.</p><span class="tech-tag">Voice</span></div>
+      <div class="tech-card reveal"><div class="tech-logo">☁️</div><h4>Google Cloud</h4><p>Hosted on Cloud Run — auto-scaling serverless backend with 99.9% uptime SLA and global CDN.</p><span class="tech-tag">Infrastructure</span></div>
+      <div class="tech-card reveal"><div class="tech-logo">🔒</div><h4>Security First</h4><p>End-to-end encryption, OAuth 2.0, rate limiting, and GDPR-compliant data handling built in.</p><span class="tech-tag">Security</span></div>
+    </div>
+    <div class="stack-bar">
+      <span class="stack-label">Stack:</span>
+      <span class="stack-chip">React</span><span class="stack-chip">Node.js</span><span class="stack-chip">Express</span><span class="stack-chip">Google Cloud</span><span class="stack-chip">Railway</span><span class="stack-chip">GitHub Actions</span><span class="stack-chip">Cloudflare</span>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="section" id="pricing">
+  <div class="container">
+    <div class="section-label">💰 Pricing</div>
+    <h2 class="section-title">Simple, Transparent Pricing</h2>
+    <p class="section-sub">Start free. Upgrade when you're ready.</p>
+    <div class="pricing-grid">
+      <div class="price-card reveal">
+        <div class="price-header"><div class="price-icon">🌱</div><h3>Free Trial</h3><p class="price-desc">Perfect for exploring 4Zone</p></div>
+        <div class="price-amount"><span class="price-num">$0</span><span class="price-per">/forever</span></div>
+        <ul class="price-features">
+          <li><span class="fi">🤖</span> 100 AI Chat / month</li>
+          <li><span class="fi">🎙️</span> 50 Voice gens / month</li>
+          <li><span class="fi">🎨</span> 50 Image gens / month</li>
+          <li><span class="fi">🎬</span> 10 Video gens / month</li>
+          <li><span class="fi">💬</span> Community support</li>
+          <li class="off"><span class="fi">⚡</span> Priority processing</li>
+          <li class="off"><span class="fi">📊</span> Usage analytics</li>
+        </ul>
+        <a href="https://app.4zone.store/register" class="btn-outline" target="_blank">Get Started Free</a>
+      </div>
+      <div class="price-card price-card-pro reveal">
+        <div class="popular-badge">⭐ Most Popular</div>
+        <div class="price-header"><div class="price-icon">🚀</div><h3>Pro Plan</h3><p class="price-desc">For power users &amp; creators</p></div>
+        <div class="price-amount"><span class="price-num">$9</span><span class="price-per">/month</span></div>
+        <ul class="price-features">
+          <li><span class="fi">🤖</span> <strong>Unlimited</strong> AI Chat</li>
+          <li><span class="fi">🎙️</span> <strong>500</strong> Voice mins / month</li>
+          <li><span class="fi">🎨</span> <strong>150</strong> Image gens / month</li>
+          <li><span class="fi">🎬</span> <strong>90</strong> Video gens / month</li>
+          <li><span class="fi">⚡</span> Priority support</li>
+          <li><span class="fi">📊</span> Advanced analytics</li>
+          <li><span class="fi">🔓</span> Early feature access</li>
+        </ul>
+        <a href="https://app.4zone.store/subscribe" class="btn-primary" target="_blank">Subscribe — $9/mo</a>
+        <p class="price-note">Cancel anytime · No hidden fees</p>
+      </div>
+
+      <!-- MAX PLAN -->
+      <div class="price-card price-card-max reveal">
+        <div class="coming-soon-badge">🔥 Coming Soon</div>
+        <div class="price-header"><div class="price-icon">👑</div><h3>MAX Plan</h3><p class="price-desc">For agencies &amp; power teams</p></div>
+        <div class="price-amount">
+          <span class="price-num-max">TBA</span>
+          <span class="price-per">/month</span>
+        </div>
+        <ul class="price-features">
+          <li><span class="fi">🤖</span> <strong>Unlimited</strong> AI Chat <span class="unlim-tag">∞</span></li>
+          <li><span class="fi">🎙️</span> <strong>Unlimited</strong> Voice Mins <span class="unlim-tag">∞</span></li>
+          <li><span class="fi">🎨</span> <strong>Unlimited</strong> Image Gens <span class="unlim-tag">∞</span></li>
+          <li><span class="fi">🎬</span> <strong>Unlimited</strong> Video Gens <span class="unlim-tag">∞</span></li>
+          <li><span class="fi">⚡</span> Highest priority processing</li>
+          <li><span class="fi">🧑‍💼</span> Dedicated account manager</li>
+          <li><span class="fi">🔌</span> API access &amp; webhooks</li>
+          <li><span class="fi">🛡️</span> SLA uptime guarantee</li>
+          <li><span class="fi">🎨</span> Custom branding &amp; white-label</li>
+        </ul>
+        <div class="btn-max-soon">🔔 Notify Me When Live</div>
+        <p class="price-note">Be the first to know · Early-bird pricing</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PARTNERSHIPS -->
+<section class="section section-alt" id="partnerships">
+  <div class="container">
+    <div class="section-label">🤝 Partnerships</div>
+    <h2 class="section-title">Growing with the Best</h2>
+    <p class="section-sub">Actively applying for startup programs from leading tech companies to accelerate 4Zone's growth.</p>
+    <div class="partner-notice">
+      <span>📋</span><span>4Zone is currently <strong>applying for startup programs</strong> with these organizations. Partnerships are in progress.</span>
+    </div>
+    <div class="partners-grid">
+      <div class="partner-card reveal"><div class="partner-logo">☁️</div><h4>Google Cloud</h4><p>Applying for Google for Startups Cloud Program — credits and technical mentorship.</p><span class="pstatus applying">🔄 Applying</span></div>
+      <div class="partner-card reveal"><div class="partner-logo">🎙️</div><h4>ElevenLabs</h4><p>Startup API access for advanced voice cloning and multilingual TTS at scale.</p><span class="pstatus applying">🔄 Applying</span></div>
+      <div class="partner-card reveal"><div class="partner-logo">🧠</div><h4>OpenAI</h4><p>Startup credits for GPT-4o integration to expand AI chat capabilities.</p><span class="pstatus applying">🔄 Applying</span></div>
+      <div class="partner-card reveal"><div class="partner-logo">🐱</div><h4>GitHub</h4><p>GitHub for Startups — free Teams plan, Copilot access, and developer tools.</p><span class="pstatus applying">🔄 Applying</span></div>
+      <div class="partner-card reveal"><div class="partner-logo">🌐</div><h4>Other Partners</h4><p>Exploring AWS, Azure, Stripe, Anthropic, and other leading platforms.</p><span class="pstatus tbd">🔮 Coming Soon</span></div>
+    </div>
+    <div class="partner-cta"><p>Interested in partnering with 4Zone?</p><a href="#contact" class="btn-outline">Get in Touch →</a></div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="section" id="about">
+  <div class="container">
+    <div class="section-label">👋 About</div>
+    <h2 class="section-title">About 4ZONE</h2>
+    <div class="about-grid">
+      <div class="about-text">
+        <p>4ZONE is an AI-powered SaaS platform built to democratize access to cutting-edge AI tools. We believe every creator, developer, and business should have affordable access to the same AI capabilities used by large enterprises.</p>
+        <p>Built on Google Cloud infrastructure, 4ZONE brings together AI chat, voice synthesis, image generation, and video creation into a single unified platform — removing the need for multiple subscriptions.</p>
+        <p>We are a small but passionate team based in Phnom Penh, Cambodia — focused on shipping fast, listening to users, and building something genuinely useful for the world. 🇰🇭</p>
+        <div class="about-values">
+          <div class="value-chip">🎯 User First</div>
+          <div class="value-chip">⚡ Ship Fast</div>
+          <div class="value-chip">🔒 Privacy Focused</div>
+          <div class="value-chip">🌍 Accessible AI</div>
+        </div>
+      </div>
+      <div class="about-visual">
+        <div class="about-card reveal"><div class="ac-icon">🚀</div><h4>Our Mission</h4><p>Make powerful AI accessible to everyone, everywhere — not just tech giants.</p></div>
+        <div class="about-card reveal"><div class="ac-icon">🌱</div><h4>Early Stage</h4><p>We're building in public, growing fast, and committed to our community of early adopters.</p></div>
+      </div>
+    </div>
+
+    <!-- FOUNDER & TEAM -->
+    <div class="team-section">
+      <div class="team-section-title">👑 Founder &amp; Team</div>
+      <p class="team-section-sub">The people behind 4ZONE — building the future of AI tools from Cambodia.</p>
+
+      <!-- Founder -->
+      <div class="founder-card reveal">
+        <div class="founder-avatar" style="background:none;border:none;box-shadow:none;width:96px;height:96px;padding:0;overflow:visible">
+          <svg width="96" height="96" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="48" cy="48" r="48" fill="#2d1a6e"/>
+            <ellipse cx="48" cy="105" rx="36" ry="20" fill="#5b21b6"/>
+            <rect x="41" y="78" width="14" height="16" rx="4" fill="#c4843a"/>
+            <ellipse cx="48" cy="55" rx="26" ry="27" fill="#c4843a"/>
+            <ellipse cx="48" cy="33" rx="26" ry="12" fill="#1a1a1a"/>
+            <rect x="22" y="33" width="7" height="20" rx="3.5" fill="#1a1a1a"/>
+            <rect x="67" y="33" width="7" height="20" rx="3.5" fill="#1a1a1a"/>
+            <ellipse cx="38" cy="54" rx="5" ry="5.5" fill="white"/>
+            <ellipse cx="58" cy="54" rx="5" ry="5.5" fill="white"/>
+            <circle cx="39" cy="55" r="3" fill="#1a1a1a"/>
+            <circle cx="59" cy="55" r="3" fill="#1a1a1a"/>
+            <circle cx="40" cy="54" r="1" fill="white"/>
+            <circle cx="60" cy="54" r="1" fill="white"/>
+            <path d="M32 48 Q38 45 44 48" stroke="#1a1a1a" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+            <path d="M52 48 Q58 45 64 48" stroke="#1a1a1a" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+            <ellipse cx="48" cy="63" rx="3.5" ry="2.5" fill="#b5732e"/>
+            <path d="M38 71 Q48 79 58 71" stroke="#8b4513" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <circle cx="76" cy="16" r="12" fill="#f59e0b"/>
+            <text x="76" y="21" text-anchor="middle" font-size="13">👑</text>
+          </svg>
+        </div>
+        <div class="founder-info">
+          <div class="founder-role">⬡ Founder &amp; CEO</div>
+          <div class="founder-name">Chea Vuthy</div>
+          <div class="founder-bio">Visionary entrepreneur and full-stack developer driving 4ZONE's mission to make AI accessible for everyone. Passionate about technology, innovation, and building products that empower creators and businesses across Southeast Asia.</div>
+          <div class="founder-tags">
+            <span class="ftag">🧠 AI &amp; Product</span>
+            <span class="ftag">💻 Full-Stack Dev</span>
+            <span class="ftag">🚀 Startup Builder</span>
+            <span class="ftag">🇰🇭 Phnom Penh</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Team Members -->
+      <div class="team-grid">
+        <!-- Sophea Rith -->
+        <div class="member-card reveal">
+          <div class="member-avatar" style="background:none;border:none;width:68px;height:68px;padding:0">
+            <svg width="68" height="68" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="48" cy="48" r="48" fill="#083344"/>
+              <ellipse cx="48" cy="105" rx="36" ry="20" fill="#0891b2"/>
+              <rect x="41" y="78" width="14" height="16" rx="4" fill="#f0a070"/>
+              <ellipse cx="48" cy="55" rx="26" ry="27" fill="#f0a070"/>
+              <ellipse cx="48" cy="33" rx="28" ry="14" fill="#2d1a0e"/>
+              <rect x="20" y="34" width="8" height="34" rx="4" fill="#2d1a0e"/>
+              <rect x="68" y="34" width="8" height="34" rx="4" fill="#2d1a0e"/>
+              <ellipse cx="38" cy="54" rx="5.5" ry="5" fill="white"/>
+              <ellipse cx="58" cy="54" rx="5.5" ry="5" fill="white"/>
+              <circle cx="39" cy="55" r="3.2" fill="#4a2c0e"/>
+              <circle cx="59" cy="55" r="3.2" fill="#4a2c0e"/>
+              <circle cx="40" cy="54" r="1" fill="white"/>
+              <circle cx="60" cy="54" r="1" fill="white"/>
+              <path d="M32 50 Q38 46 44 50" stroke="#1a1a1a" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+              <path d="M52 50 Q58 46 64 50" stroke="#1a1a1a" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+              <ellipse cx="48" cy="64" rx="3.5" ry="2.5" fill="#e08858"/>
+              <path d="M39 72 Q48 80 57 72" stroke="#c05030" stroke-width="2" fill="none" stroke-linecap="round"/>
+              <ellipse cx="32" cy="66" rx="7" ry="4" fill="#ff9090" opacity="0.35"/>
+              <ellipse cx="64" cy="66" rx="7" ry="4" fill="#ff9090" opacity="0.35"/>
+            </svg>
+          </div>
+          <div class="member-name">Sophea Rith</div>
+          <div class="member-role">UI/UX Designer</div>
+          <div class="member-desc">Crafting beautiful, intuitive interfaces that make AI tools feel effortless.</div>
+        </div>
+
+        <!-- Dara Heng -->
+        <div class="member-card reveal">
+          <div class="member-avatar" style="background:none;border:none;width:68px;height:68px;padding:0">
+            <svg width="68" height="68" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="48" cy="48" r="48" fill="#14401c"/>
+              <ellipse cx="48" cy="105" rx="36" ry="20" fill="#16a34a"/>
+              <rect x="41" y="78" width="14" height="16" rx="4" fill="#a86030"/>
+              <ellipse cx="48" cy="55" rx="26" ry="27" fill="#a86030"/>
+              <ellipse cx="48" cy="32" rx="26" ry="12" fill="#111"/>
+              <rect x="22" y="32" width="7" height="20" rx="3.5" fill="#111"/>
+              <rect x="67" y="32" width="7" height="20" rx="3.5" fill="#111"/>
+              <rect x="30" y="50" width="16" height="12" rx="4" fill="none" stroke="#555" stroke-width="2"/>
+              <rect x="50" y="50" width="16" height="12" rx="4" fill="none" stroke="#555" stroke-width="2"/>
+              <line x1="46" y1="56" x2="50" y2="56" stroke="#555" stroke-width="2"/>
+              <ellipse cx="38" cy="56" rx="4" ry="4" fill="white" opacity="0.9"/>
+              <ellipse cx="58" cy="56" rx="4" ry="4" fill="white" opacity="0.9"/>
+              <circle cx="39" cy="56" r="2.5" fill="#1a1a1a"/>
+              <circle cx="59" cy="56" r="2.5" fill="#1a1a1a"/>
+              <path d="M32 49 Q38 46 44 49" stroke="#1a1a1a" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+              <path d="M52 49 Q58 46 64 49" stroke="#1a1a1a" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+              <ellipse cx="48" cy="65" rx="3.5" ry="2.5" fill="#8b5020"/>
+              <path d="M39 73 Q48 80 57 73" stroke="#7a3a10" stroke-width="2" fill="none" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="member-name">Dara Heng</div>
+          <div class="member-role">Backend Engineer</div>
+          <div class="member-desc">Building robust APIs and integrating Google Cloud AI services at scale.</div>
+        </div>
+
+        <!-- Kimlong Pov -->
+        <div class="member-card reveal">
+          <div class="member-avatar" style="background:none;border:none;width:68px;height:68px;padding:0">
+            <svg width="68" height="68" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="48" cy="48" r="48" fill="#2e1065"/>
+              <ellipse cx="48" cy="105" rx="36" ry="20" fill="#7c3aed"/>
+              <rect x="41" y="78" width="14" height="16" rx="4" fill="#d4906a"/>
+              <ellipse cx="48" cy="55" rx="26" ry="27" fill="#d4906a"/>
+              <ellipse cx="48" cy="32" rx="26" ry="12" fill="#1a1a1a"/>
+              <polygon points="36,22 40,34 32,34" fill="#1a1a1a"/>
+              <polygon points="48,18 52,32 44,32" fill="#1a1a1a"/>
+              <polygon points="60,22 64,34 56,34" fill="#1a1a1a"/>
+              <ellipse cx="38" cy="54" rx="5" ry="5" fill="white"/>
+              <ellipse cx="58" cy="54" rx="5" ry="5" fill="white"/>
+              <circle cx="39" cy="55" r="3" fill="#2d1a0e"/>
+              <circle cx="59" cy="55" r="3" fill="#2d1a0e"/>
+              <circle cx="40" cy="54" r="1" fill="white"/>
+              <circle cx="60" cy="54" r="1" fill="white"/>
+              <path d="M32 48 Q38 45 44 48" stroke="#1a1a1a" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+              <path d="M52 48 Q58 45 64 48" stroke="#1a1a1a" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+              <ellipse cx="48" cy="64" rx="3.5" ry="2.5" fill="#b8703a"/>
+              <path d="M38 72 Q48 80 58 72" stroke="#904020" stroke-width="2" fill="none" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="member-name">Kimlong Pov</div>
+          <div class="member-role">Frontend Developer</div>
+          <div class="member-desc">Building responsive, fast web apps with React and modern frontend tools.</div>
+        </div>
+
+        <!-- Sreymom Chan -->
+        <div class="member-card reveal">
+          <div class="member-avatar" style="background:none;border:none;width:68px;height:68px;padding:0">
+            <svg width="68" height="68" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="48" cy="48" r="48" fill="#4a1020"/>
+              <ellipse cx="48" cy="105" rx="36" ry="20" fill="#dc2626"/>
+              <rect x="41" y="78" width="14" height="16" rx="4" fill="#e8a878"/>
+              <ellipse cx="48" cy="55" rx="26" ry="27" fill="#e8a878"/>
+              <ellipse cx="48" cy="31" rx="26" ry="12" fill="#3d1a08"/>
+              <rect x="22" y="31" width="7" height="28" rx="3.5" fill="#3d1a08"/>
+              <rect x="67" y="31" width="7" height="28" rx="3.5" fill="#3d1a08"/>
+              <circle cx="48" cy="25" r="10" fill="#3d1a08"/>
+              <circle cx="48" cy="25" r="7" fill="#5a2a10"/>
+              <ellipse cx="38" cy="54" rx="5.5" ry="5" fill="white"/>
+              <ellipse cx="58" cy="54" rx="5.5" ry="5" fill="white"/>
+              <circle cx="39" cy="55" r="3.2" fill="#3d1a08"/>
+              <circle cx="59" cy="55" r="3.2" fill="#3d1a08"/>
+              <circle cx="40" cy="54" r="1" fill="white"/>
+              <circle cx="60" cy="54" r="1" fill="white"/>
+              <path d="M32 50 Q38 46 44 50" stroke="#1a1a1a" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+              <path d="M52 50 Q58 46 64 50" stroke="#1a1a1a" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+              <ellipse cx="48" cy="64" rx="3.5" ry="2.5" fill="#c87850"/>
+              <path d="M38 72 Q48 81 58 72" stroke="#b04830" stroke-width="2" fill="none" stroke-linecap="round"/>
+              <ellipse cx="32" cy="66" rx="7" ry="4" fill="#ff8080" opacity="0.35"/>
+              <ellipse cx="64" cy="66" rx="7" ry="4" fill="#ff8080" opacity="0.35"/>
+            </svg>
+          </div>
+          <div class="member-name">Sreymom Chan</div>
+          <div class="member-role">Product Manager</div>
+          <div class="member-desc">Aligning user needs with business goals to ship features that truly matter.</div>
+        </div>
+
+        <!-- Borey Sok -->
+        <div class="member-card reveal">
+          <div class="member-avatar" style="background:none;border:none;width:68px;height:68px;padding:0">
+            <svg width="68" height="68" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="48" cy="48" r="48" fill="#3a2800"/>
+              <ellipse cx="48" cy="105" rx="36" ry="20" fill="#d97706"/>
+              <rect x="41" y="78" width="14" height="16" rx="4" fill="#c08040"/>
+              <ellipse cx="48" cy="55" rx="26" ry="27" fill="#c08040"/>
+              <ellipse cx="48" cy="32" rx="26" ry="12" fill="#1a1008"/>
+              <rect x="22" y="32" width="7" height="20" rx="3.5" fill="#1a1008"/>
+              <rect x="67" y="32" width="7" height="20" rx="3.5" fill="#1a1008"/>
+              <path d="M22 46 Q22 26 48 26 Q74 26 74 46" stroke="#444" stroke-width="3" fill="none"/>
+              <circle cx="21" cy="48" r="6" fill="#555"/>
+              <circle cx="75" cy="48" r="6" fill="#555"/>
+              <line x1="75" y1="54" x2="72" y2="64" stroke="#555" stroke-width="2.5"/>
+              <circle cx="71" cy="67" r="4" fill="#555"/>
+              <ellipse cx="38" cy="54" rx="5" ry="5" fill="white"/>
+              <ellipse cx="58" cy="54" rx="5" ry="5" fill="white"/>
+              <circle cx="39" cy="55" r="3" fill="#1a0a00"/>
+              <circle cx="59" cy="55" r="3" fill="#1a0a00"/>
+              <circle cx="40" cy="54" r="1" fill="white"/>
+              <circle cx="60" cy="54" r="1" fill="white"/>
+              <path d="M32 48 Q38 45 44 48" stroke="#1a1a1a" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+              <path d="M52 48 Q58 45 64 48" stroke="#1a1a1a" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+              <ellipse cx="48" cy="64" rx="3.5" ry="2.5" fill="#a06820"/>
+              <path d="M38 72 Q48 81 58 72" stroke="#804010" stroke-width="2" fill="none" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="member-name">Borey Sok</div>
+          <div class="member-role">Growth &amp; Marketing</div>
+          <div class="member-desc">Growing 4ZONE's community through creative campaigns and partnerships.</div>
+        </div>
+
+        <!-- Visal Keo -->
+        <div class="member-card reveal">
+          <div class="member-avatar" style="background:none;border:none;width:68px;height:68px;padding:0">
+            <svg width="68" height="68" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="48" cy="48" r="48" fill="#0a3050"/>
+              <ellipse cx="48" cy="105" rx="36" ry="20" fill="#0369a1"/>
+              <rect x="41" y="78" width="14" height="16" rx="4" fill="#b07040"/>
+              <ellipse cx="48" cy="55" rx="26" ry="27" fill="#b07040"/>
+              <rect x="22" y="27" width="52" height="15" rx="6" fill="#111"/>
+              <ellipse cx="48" cy="27" rx="27" ry="8" fill="#111"/>
+              <path d="M26 78 Q48 93 70 78 Q68 66 48 68 Q28 66 26 78" fill="#2a1a08" opacity="0.7"/>
+              <ellipse cx="38" cy="54" rx="5" ry="5" fill="white"/>
+              <ellipse cx="58" cy="54" rx="5" ry="5" fill="white"/>
+              <circle cx="39" cy="55" r="3" fill="#1a0800"/>
+              <circle cx="59" cy="55" r="3" fill="#1a0800"/>
+              <circle cx="40" cy="54" r="1" fill="white"/>
+              <circle cx="60" cy="54" r="1" fill="white"/>
+              <path d="M32 48 Q38 46 44 48" stroke="#1a1a1a" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+              <path d="M52 48 Q58 46 64 48" stroke="#1a1a1a" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+              <ellipse cx="48" cy="64" rx="3.5" ry="2.5" fill="#8a5020"/>
+              <path d="M38 71 Q48 78 58 71" stroke="#6a3010" stroke-width="2" fill="none" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="member-name">Visal Keo</div>
+          <div class="member-role">DevOps &amp; Security</div>
+          <div class="member-desc">Keeping 4ZONE fast, secure, and reliable on Google Cloud infrastructure.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="section section-alt" id="contact">
+  <div class="container">
+    <div class="section-label">📬 Contact</div>
+    <h2 class="section-title">Get in Touch</h2>
+    <p class="section-sub">Questions, feedback, or partnership inquiries? We'd love to hear from you.</p>
+    <div class="contact-grid">
+      <div class="contact-info">
+        <div class="contact-item"><span class="ci-icon">✉️</span><div><strong>Email</strong><p>admin@4zone.store</p></div></div>
+        <div class="contact-item"><span class="ci-icon">🤝</span><div><strong>Partnerships</strong><p>admin@4zone.store</p></div></div>
+        <div class="contact-item"><span class="ci-icon">🐱</span><div><strong>GitHub</strong><p>github.com/4zone-store</p></div></div>
+        <div class="contact-item"><span class="ci-icon">📍</span><div><strong>Location</strong><p>Phnom Penh, Cambodia 🇰🇭</p></div></div>
+      </div>
+      <form class="contact-form" id="contactForm">
+        <input type="text" placeholder="Your name" required/>
+        <input type="email" placeholder="Email address" required/>
+        <select><option value="">Inquiry type...</option><option>General Question</option><option>Partnership</option><option>Technical Support</option><option>Bug Report</option></select>
+        <textarea placeholder="Your message..." rows="4" required></textarea>
+        <button type="submit" class="btn-primary">Send Message 📨</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="#home" class="logo"><span class="logo-icon">⬡</span><span>4<span class="acc">Zone</span></span></a>
+        <p>AI-powered tools for the modern creator. Built on Google Cloud.</p>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col"><h5>Product</h5><a href="#platform">Platform</a><a href="#pricing">Pricing</a><a href="https://app.4zone.store" target="_blank">Launch App</a></div>
+        <div class="footer-col"><h5>Company</h5><a href="#about">About</a><a href="#partnerships">Partnerships</a><a href="#contact">Contact</a></div>
+        <div class="footer-col"><h5>Legal</h5><a href="#privacy" onclick="showPolicy('privacy')">Privacy Policy</a><a href="#terms" onclick="showPolicy('terms')">Terms of Service</a></div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 4ZONE · 4zone.store · Built with ❤️ in Cambodia 🇰🇭</p>
+      <p class="footer-powered">Powered by Google Cloud AI</p>
+    </div>
+  </div>
+</footer>
+
+<!-- POLICY MODAL -->
+<div id="policyModal" style="display:none;position:fixed;inset:0;z-index:2000;background:rgba(0,0,0,.7);backdrop-filter:blur(8px);overflow-y:auto;padding:40px 20px">
+  <div style="max-width:700px;margin:0 auto;background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:40px;position:relative">
+    <button onclick="document.getElementById('policyModal').style.display='none'" style="position:absolute;top:16px;right:16px;background:var(--card);border:1px solid var(--border);border-radius:8px;width:32px;height:32px;cursor:pointer;color:var(--text);font-size:1rem">✕</button>
+    <div id="policyContent"></div>
+  </div>
+</div>
+
+<script>
+// Theme
+const html=document.documentElement;
+const themeBtn=document.getElementById('themeToggle');
+const saved=localStorage.getItem('theme')||'dark';
+html.setAttribute('data-theme',saved);
+themeBtn.textContent=saved==='dark'?'☀':'🌙';
+themeBtn.addEventListener('click',()=>{
+  const t=html.getAttribute('data-theme')==='dark'?'light':'dark';
+  html.setAttribute('data-theme',t);localStorage.setItem('theme',t);
+  themeBtn.textContent=t==='dark'?'☀':'🌙';
+});
+
+// Navbar scroll + progress bar
+const navbar=document.getElementById('navbar');
+const scrollBar=document.getElementById('scrollBar');
+window.addEventListener('scroll',()=>{
+  navbar.classList.toggle('scrolled',scrollY>20);
+  const docH=document.documentElement.scrollHeight-window.innerHeight;
+  scrollBar.style.width=(scrollY/docH*100)+'%';
+  updateActive();
+});
+
+// ── DOTS DROPDOWN ──
+const dotsBtn=document.getElementById('dotsBtn');
+const dropdown=document.getElementById('dropdown');
+function closeDrop(){
+  dropdown.classList.remove('show');
+  dotsBtn.classList.remove('open');
+}
+dotsBtn.addEventListener('click',e=>{
+  e.stopPropagation();
+  const isOpen=dropdown.classList.contains('show');
+  isOpen?closeDrop():(dropdown.classList.add('show'),dotsBtn.classList.add('open'));
+});
+document.addEventListener('click',e=>{
+  if(!dropdown.contains(e.target)&&e.target!==dotsBtn) closeDrop();
+});
+// Close dropdown on nav link click
+dropdown.querySelectorAll('a[data-sec]').forEach(a=>{
+  a.addEventListener('click',()=>closeDrop());
+});
+
+// Active section highlight — nav + dropdown
+const secs=document.querySelectorAll('section[id]');
+const nl=document.getElementById('navLinks');
+function updateActive(){
+  let cur='';
+  secs.forEach(s=>{if(scrollY>=s.offsetTop-140)cur=s.id});
+  nl.querySelectorAll('a').forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+cur));
+  dropdown.querySelectorAll('a[data-sec]').forEach(a=>
+    a.classList.toggle('active-link',a.dataset.sec===cur)
+  );
+}
+updateActive();
+
+// Contact form
+document.getElementById('contactForm').addEventListener('submit',e=>{
+  e.preventDefault();
+  const btn=e.target.querySelector('button');
+  btn.textContent='✓ Sent! We\'ll be in touch.';btn.style.background='#10b981';
+  setTimeout(()=>{btn.textContent='Send Message 📨';btn.style.background='';e.target.reset();},4000);
+});
+
+// Scroll reveal
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')});
+},{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+// Policy modal
+const PRIVACY=`<h1 style="font-family:var(--fh);font-size:1.8rem;font-weight:800;margin-bottom:6px">Privacy Policy</h1>
+<p style="color:var(--text2);font-size:.85rem;margin-bottom:32px">Last updated: January 2025</p>
+<h2 style="font-family:var(--fh);color:var(--accent);font-size:1.1rem;margin:24px 0 10px">1. Information We Collect</h2>
+<p style="color:var(--text2);line-height:1.8;font-size:.92rem">Account info (name, email), usage data, content submitted to AI tools (processed, not stored permanently), and technical data (IP, browser type).</p>
+<h2 style="font-family:var(--fh);color:var(--accent);font-size:1.1rem;margin:24px 0 10px">2. How We Use It</h2>
+<p style="color:var(--text2);line-height:1.8;font-size:.92rem">To provide and improve 4Zone services, process payments, and ensure platform security. We do not sell your personal data.</p>
+<h2 style="font-family:var(--fh);color:var(--accent);font-size:1.1rem;margin:24px 0 10px">3. Google Cloud AI APIs</h2>
+<p style="color:var(--text2);line-height:1.8;font-size:.92rem">Content submitted to AI tools is processed via Google Cloud APIs per Google's Privacy Policy. We do not store AI-generated content after delivery.</p>
+<h2 style="font-family:var(--fh);color:var(--accent);font-size:1.1rem;margin:24px 0 10px">4. Your Rights</h2>
+<p style="color:var(--text2);line-height:1.8;font-size:.92rem">Access, update, or delete your data anytime. Contact: admin@4zone.store · Phnom Penh, Cambodia 🇰🇭</p>`;
+
+const TERMS=`<h1 style="font-family:var(--fh);font-size:1.8rem;font-weight:800;margin-bottom:6px">Terms of Service</h1>
+<p style="color:var(--text2);font-size:.85rem;margin-bottom:32px">Last updated: January 2025</p>
+<h2 style="font-family:var(--fh);color:var(--accent);font-size:1.1rem;margin:24px 0 10px">1. Acceptance</h2>
+<p style="color:var(--text2);line-height:1.8;font-size:.92rem">By using 4Zone at 4zone.store, you agree to these Terms. You must be 13+ to use the service.</p>
+<h2 style="font-family:var(--fh);color:var(--accent);font-size:1.1rem;margin:24px 0 10px">2. Acceptable Use</h2>
+<p style="color:var(--text2);line-height:1.8;font-size:.92rem">Do not use 4Zone to generate illegal, harmful, or misleading content, violate IP rights, or abuse the platform. Violations result in account termination.</p>
+<h2 style="font-family:var(--fh);color:var(--accent);font-size:1.1rem;margin:24px 0 10px">3. Billing</h2>
+<p style="color:var(--text2);line-height:1.8;font-size:.92rem">Free plan available with usage limits. Pro plan is $9/month, billed monthly. Cancel anytime. No refunds for partial months.</p>
+<h2 style="font-family:var(--fh);color:var(--accent);font-size:1.1rem;margin:24px 0 10px">4. Intellectual Property</h2>
+<p style="color:var(--text2);line-height:1.8;font-size:.92rem">Content you create belongs to you. 4Zone's platform, branding, and code are our intellectual property.</p>
+<h2 style="font-family:var(--fh);color:var(--accent);font-size:1.1rem;margin:24px 0 10px">5. Contact</h2>
+<p style="color:var(--text2);line-height:1.8;font-size:.92rem">admin@4zone.store · Phnom Penh, Cambodia 🇰🇭</p>`;
+
+function showPolicy(type){
+  document.getElementById('policyContent').innerHTML=type==='privacy'?PRIVACY:TERMS;
+  document.getElementById('policyModal').style.display='block';
+  return false;
+}
+</script>
+</body>
+</html>
