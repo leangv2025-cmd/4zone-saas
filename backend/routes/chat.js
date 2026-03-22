@@ -8,7 +8,7 @@ const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
 // POST /api/chat — Send message to Gemini
 router.post('/', async (req, res) => {
   try {
-    const { message, history = [], model = 'gemini-1.5-flash' } = req.body;
+    const { message, history = [], model = 'gemini-2.0-flash' } = req.body;
     if (!message) return res.status(400).json({ error: 'Message is required' });
 
     const genModel = genAI.getGenerativeModel({ model });
@@ -40,7 +40,7 @@ router.post('/stream', async (req, res) => {
     res.setHeader('Cache-Control', 'no-cache');
     res.setHeader('Connection', 'keep-alive');
 
-    const genModel = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+    const genModel = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
     const chat = genModel.startChat({ history: history.map(h => ({ role: h.role, parts: [{ text: h.content }] })) });
     const result = await chat.sendMessageStream(message);
 
