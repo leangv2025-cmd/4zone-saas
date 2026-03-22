@@ -13,9 +13,9 @@ const PORT = process.env.PORT || 3001;
 app.use(helmet({ contentSecurityPolicy: false }));
 app.use(cors({
   origin: [
-    'https://4zone.store',
-    'https://www.4zone.store',
-    'https://app.4zone.store',
+    'https://4zone.site',
+    'https://www.4zone.site',
+    'https://app.4zone.site',
     'http://localhost:3000',
     'http://localhost:5173',
   ],

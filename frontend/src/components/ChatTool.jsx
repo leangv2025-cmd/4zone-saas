@@ -1,7 +1,7 @@
 // src/components/ChatTool.jsx
 import { useState, useRef, useEffect } from "react";
 
-const API = import.meta.env.VITE_API_URL || "https://api.4zone.store";
+const API = import.meta.env.VITE_API_URL || "https://api.4zone.site";
 
 export default function ChatTool() {
   const [messages, setMessages] = useState([

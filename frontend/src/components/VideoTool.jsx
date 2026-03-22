@@ -1,7 +1,7 @@
 // src/components/VideoTool.jsx
 import { useState } from "react";
 
-const API = import.meta.env.VITE_API_URL || "https://api.4zone.store";
+const API = import.meta.env.VITE_API_URL || "https://api.4zone.site";
 
 export default function VideoTool() {
   const [prompt, setPrompt] = useState("");

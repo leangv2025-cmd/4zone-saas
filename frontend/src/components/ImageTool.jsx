@@ -1,7 +1,7 @@
 // src/components/ImageTool.jsx
 import { useState } from "react";
 
-const API = import.meta.env.VITE_API_URL || "https://api.4zone.store";
+const API = import.meta.env.VITE_API_URL || "https://api.4zone.site";
 
 const STYLES = ["photorealistic","cinematic","digital art","oil painting","watercolor","anime","sketch","3D render","minimalist","abstract"];
 const RATIOS = ["1:1","16:9","9:16","4:3","3:4"];

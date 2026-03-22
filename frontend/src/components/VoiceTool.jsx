@@ -1,7 +1,7 @@
 // src/components/VoiceTool.jsx
 import { useState, useRef } from "react";
 
-const API = import.meta.env.VITE_API_URL || "https://api.4zone.store";
+const API = import.meta.env.VITE_API_URL || "https://api.4zone.site";
 
 const VOICES = [
   { name: "en-US-Neural2-F", label: "Emma (US Female)", lang: "en-US" },

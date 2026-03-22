@@ -40,7 +40,7 @@ export default function App() {
       {/* Sidebar */}
       <aside className={`sidebar ${sidebarOpen ? "open" : ""}`}>
         <div className="sidebar-logo">
-          <a href="https://4zone.store" className="logo-link">
+          <a href="https://4zone.site" className="logo-link">
             <span className="logo-icon">⬡</span>
             <span className="logo-text">4<span className="accent">Zone</span></span>
           </a>
@@ -63,11 +63,11 @@ export default function App() {
         </nav>
 
         <div className="sidebar-footer">
-          <a href="https://4zone.store/#pricing" className="upgrade-btn" target="_blank">
+          <a href="https://4zone.site/#pricing" className="upgrade-btn" target="_blank">
             🚀 Upgrade to Pro — $9/mo
           </a>
           <div className="sidebar-links">
-            <a href="https://4zone.store" target="_blank">← Main Site</a>
+            <a href="https://4zone.site" target="_blank">← Main Site</a>
             <button
               className="theme-toggle"
               onClick={() => setTheme(t => t === "dark" ? "light" : "dark")}
