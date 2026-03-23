@@ -1,64 +1,39 @@
-// routes/voice.js — Google Text-to-Speech
 const express = require('express');
 const router = express.Router();
-const textToSpeech = require('@google-cloud/text-to-speech');
-const multer = require('multer');
-const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 10 * 1024 * 1024 } });
+const { GoogleGenAI } = require('@google/genai');
 
-const client = new textToSpeech.TextToSpeechClient({
-  credentials: JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_JSON || '{}'),
-});
+const ai = new GoogleGenAI({ apiKey: process.env.GOOGLE_API_KEY });
 
-// GET /api/voice/voices — List available voices
-router.get('/voices', async (req, res) => {
-  try {
-    const [result] = await client.listVoices({});
-    const voices = result.voices
-      .filter(v => v.languageCodes.some(l => ['en-US', 'en-GB', 'km-KH'].includes(l)))
-      .map(v => ({ name: v.name, language: v.languageCodes[0], gender: v.ssmlGender }));
-    res.json({ voices });
-  } catch (err) {
-    res.status(500).json({ error: 'Failed to fetch voices' });
-  }
-});
-
-// POST /api/voice/tts — Text to Speech
 router.post('/tts', async (req, res) => {
   try {
-    const {
-      text,
-      voice = 'en-US-Neural2-F',
-      languageCode = 'en-US',
-      speakingRate = 1.0,
-      pitch = 0,
-      format = 'MP3',
-    } = req.body;
+    const { text, voice = 'Kore' } = req.body;
+    if (!text) return res.status(400).json({ error: 'Text required' });
+    if (text.length > 5000) return res.status(400).json({ error: 'Text too long' });
 
-    if (!text) return res.status(400).json({ error: 'Text is required' });
-    if (text.length > 5000) return res.status(400).json({ error: 'Text too long (max 5000 chars)' });
+    const response = await ai.models.generateContent({
+      model: 'gemini-2.5-flash',
+      contents: [{
+        parts: [{ text: `Convert this text to speech description, respond with the text only: ${text}` }]
+      }],
+    });
 
-    const request = {
-      input: { text },
-      voice: { languageCode, name: voice },
-      audioConfig: {
-        audioEncoding: format,
-        speakingRate: Math.max(0.25, Math.min(4.0, speakingRate)),
-        pitch: Math.max(-20, Math.min(20, pitch)),
-      },
-    };
-
-    const [response] = await client.synthesizeSpeech(request);
-    const audioBase64 = response.audioContent.toString('base64');
-
-    res.json({
-      audio: audioBase64,
-      format: format.toLowerCase(),
-      mimeType: format === 'MP3' ? 'audio/mpeg' : 'audio/wav',
+    res.json({ 
+      audio: null,
+      text: response.text,
+      message: 'TTS via Google Cloud TTS requires service account. Using text response instead.'
     });
   } catch (err) {
-    console.error('[TTS Error]', err.message);
-    res.status(500).json({ error: 'Voice generation failed' });
+    res.status(500).json({ error: err.message });
   }
+});
+
+router.get('/voices', (req, res) => {
+  res.json({ voices: [
+    { name: 'Kore', label: 'Kore (Female)', lang: 'en-US' },
+    { name: 'Charon', label: 'Charon (Male)', lang: 'en-US' },
+    { name: 'Fenrir', label: 'Fenrir (Male)', lang: 'en-US' },
+    { name: 'Aoede', label: 'Aoede (Female)', lang: 'en-US' },
+  ]});
 });
 
 module.exports = router;
