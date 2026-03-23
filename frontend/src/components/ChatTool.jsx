@@ -1,4 +1,3 @@
-// src/components/ChatTool.jsx
 import { useState, useRef, useEffect } from "react";
 
 const API = import.meta.env.VITE_API_URL || "https://api.4zone.site";
@@ -18,17 +17,16 @@ export default function ChatTool() {
   const send = async () => {
     const text = input.trim();
     if (!text || loading) return;
-
     const userMsg = { role: "user", content: text };
     setMessages(m => [...m, userMsg]);
     setInput("");
     setLoading(true);
-
     try {
-      const history = messages.slice(-10).map(m => ({
-        role: m.role === "assistant" ? "model" : "user",
-        content: m.content,
-      }));
+      const allMsgs = [...messages, userMsg];
+      const history = allMsgs
+        .filter(m => m.role === "user" || m.role === "model")
+        .slice(0, -1)
+        .map(m => ({ role: m.role, content: m.content }));
 
       const res = await fetch(`${API}/api/chat`, {
         method: "POST",
@@ -36,9 +34,9 @@ export default function ChatTool() {
         body: JSON.stringify({ message: text, history }),
       });
       const data = await res.json();
-      setMessages(m => [...m, { role: "assistant", content: data.message || data.error }]);
+      setMessages(m => [...m, { role: "model", content: data.message || data.error }]);
     } catch {
-      setMessages(m => [...m, { role: "assistant", content: "❌ Connection error. Please try again." }]);
+      setMessages(m => [...m, { role: "model", content: "❌ Connection error. Please try again." }]);
     } finally {
       setLoading(false);
     }
@@ -48,48 +46,32 @@ export default function ChatTool() {
     if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(); }
   };
 
-  const clear = () => setMessages([{ role: "assistant", content: "Chat cleared! How can I help you?" }]);
-
   return (
     <div className="chat-container">
       <div className="chat-header">
         <span>🤖 Gemini AI Chat</span>
-        <button className="icon-btn" onClick={clear} title="Clear chat">🗑️</button>
+        <button className="icon-btn" onClick={() => setMessages([{ role: "assistant", content: "Chat cleared! How can I help you?" }])}>🗑️</button>
       </div>
-
       <div className="chat-messages">
         {messages.map((msg, i) => (
           <div key={i} className={`msg ${msg.role}`}>
-            <div className="msg-avatar">
-              {msg.role === "assistant" ? "🤖" : "👤"}
-            </div>
-            <div className="msg-bubble">
-              <pre className="msg-text">{msg.content}</pre>
-            </div>
+            <div className="msg-avatar">{msg.role === "user" ? "👤" : "🤖"}</div>
+            <div className="msg-bubble"><pre className="msg-text">{msg.content}</pre></div>
           </div>
         ))}
         {loading && (
-          <div className="msg assistant">
+          <div className="msg model">
             <div className="msg-avatar">🤖</div>
-            <div className="msg-bubble typing">
-              <span /><span /><span />
-            </div>
+            <div className="msg-bubble typing"><span/><span/><span/></div>
           </div>
         )}
-        <div ref={bottomRef} />
+        <div ref={bottomRef}/>
       </div>
-
       <div className="chat-input-row">
-        <textarea
-          value={input}
-          onChange={e => setInput(e.target.value)}
-          onKeyDown={handleKey}
-          placeholder="Type your message... (Enter to send, Shift+Enter for new line)"
-          rows={2}
-          disabled={loading}
-        />
-        <button className="send-btn" onClick={send} disabled={loading || !input.trim()}>
-          {loading ? "⏳" : "➤"}
+        <textarea value={input} onChange={e=>setInput(e.target.value)} onKeyDown={handleKey}
+          placeholder="Type your message..." rows={2} disabled={loading}/>
+        <button className="send-btn" onClick={send} disabled={loading||!input.trim()}>
+          {loading?"⏳":"➤"}
         </button>
       </div>
     </div>
